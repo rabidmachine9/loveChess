@@ -17,7 +17,7 @@ function PieceFactory:spawnPosition(position)
 		if p ~= nil then
 			p.id = #self.pieces + 1
 			table.insert(self.pieces, p)
-			
+
 		end
 	end
 
@@ -35,16 +35,16 @@ end
 function PieceFactory:createPiece(color,position)
 	if string.len(position) == 2 then
 		return Pawn:new(color,position)
-	elseif (position):sub(1,1) == 'R' then
+	elseif (position):sub(1,1) == 'r' then
 		return Tower:new(color,position:sub(2,3))
-	elseif (position):sub(1,1) == 'K' then
-		return King:new(color,position:sub(2,3))
 	elseif (position):sub(1,1) == 'k' then
+		return King:new(color,position:sub(2,3))
+	elseif (position):sub(1,1) == 'n' then
 		return Knight:new(color,position:sub(2,3))
-	elseif (position):sub(1,1) == 'Q' then	
-		return Queen:new(color,position:sub(2,3)) 
-	elseif (position):sub(1,1) == 'B' then
-		return Bishop:new(color,position:sub(2,3)) 
+	elseif (position):sub(1,1) == 'q' then
+		return Queen:new(color,position:sub(2,3))
+	elseif (position):sub(1,1) == 'b' then
+		return Bishop:new(color,position:sub(2,3))
 	else
 		print('Error: the position you are entering cannot be interpreted!')
 		return nil

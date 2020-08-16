@@ -16,8 +16,6 @@ Piece.possibleMoves = {}
 Piece.image = love.graphics.newImage('images/pawn_w.png')
 Piece.tempDead = false
 
-
-
 function Piece:new(color,square,pieceType)
 	local newPiece = {color = color, square = square, pieceType = pieceType }
 
@@ -377,6 +375,10 @@ function Piece:moveTo(square)
 end
 
 
+function Piece:getSquare()
+	return self.square
+end
+
 function Piece:legalMoves()
 	local possibleMoves = self:getPossibleMoves()
 
@@ -391,5 +393,12 @@ function Piece:legalMoves()
 	return possibleMoves
 end
 
+function Piece:getSymbol()
+	return self.symbol
+end
+
+function Piece:getPosition()
+	return self.square
+end
 
 return Piece

@@ -6,6 +6,7 @@ Queen = Piece:new()
 
 Queen.hasMoved = false
 Queen.type = 'queen'
+Queen.symbol = 'q'
 Queen.points = 9
 
 

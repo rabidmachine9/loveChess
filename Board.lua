@@ -192,6 +192,21 @@ function Board:isSquareUnderAttack(square)
 end
 
 
+function Board:getPosition()
+	local position = {}
+	local ssq
 
+	for i,p in ipairs(Pieces) do
+		if p.color == 'white' then
+			ssq = string.upper(p:getSymbol()) .. p:getSquare()
+			table.insert(position,ssq)
+		elseif p.color == 'black' then
+			ssq = p:getSymbol() .. p:getSquare()
+			table.insert(position,ssq)
+		end
+	end
+
+	return position
+end
 
 return Board

@@ -8,6 +8,7 @@ Knight = Piece:new()
 
 Knight.hasMoved = false
 Knight.type = 'knight'
+Knight.symbol = 'n'
 Knight.points = 3
 
 
@@ -49,7 +50,7 @@ function Knight:getPossibleMoves()
 	)
 
 
-	
+
 	return self.possibleMoves
 end
 
@@ -69,6 +70,6 @@ function Knight:_leftRight(square)
 	table.insert(moves, self:moveRight(square))
 
 	return moves
-end 
+end
 
 return Knight

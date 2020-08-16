@@ -4,8 +4,9 @@ require 'Positions'
 require 'PieceFactory'
 
 local array = require 'lib.array'
-
 local inspect = require 'lib.inspect'
+
+
 local hasTurn = 'white'
 
 
@@ -83,7 +84,7 @@ function love.mousepressed(x,y)
 		print("Color:" .. clickedPiece.color)
 		print("Has turn:" .. chessBoard.hasTurn)
 		print("Just Did double:" .. tostring(clickedPiece.justDidDoubleMove))
-
+		print("Position:" .. assert(inspect(chessBoard:getPosition())))
 		if clickedPiece.type == "pawn" then
 			print("Reached in Rome:" .. tostring(clickedPiece:inRome()))
 		end

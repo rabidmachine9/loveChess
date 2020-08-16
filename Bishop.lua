@@ -5,6 +5,7 @@ Bishop = Piece:new()
 
 Bishop.hasMoved = false
 Bishop.type = 'bishop'
+Bishop.symbol = 'b'
 Bishop.points = 3
 
 

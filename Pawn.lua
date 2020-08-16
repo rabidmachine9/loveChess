@@ -7,6 +7,7 @@ Pawn = Piece:new()
 
 Pawn.hasMoved = false
 Pawn.type = 'pawn'
+Pawn.symbol = 'p'
 Pawn.amPasanOffence = false -- allows other pawns to amPasan attack
 Pawn.amPassanDefence = false
 Pawn.forwardMove = nil
@@ -20,11 +21,11 @@ function Pawn:getPossibleMoves()
 
 	self.forwardMove = self:moveForward()
 
-	if chessBoard:isSquareEmpty(self.forwardMove) then 
+	if chessBoard:isSquareEmpty(self.forwardMove) then
 		table.insert(self.possibleMoves, self.forwardMove)
 		self.moveMeta[self.forwardMove] = 'single'
 
-		if self.hasMoved == false then 
+		if self.hasMoved == false then
 			local doubleMove = self:moveForward(self.forwardMove)
 			if chessBoard:isSquareEmpty(doubleMove) then
 				table.insert(self.possibleMoves, doubleMove)
@@ -38,7 +39,7 @@ end
 
 function Pawn:getAttacks()
 	local attackSquares = {}
-	
+
 	local leftAttack = self:moveLeft(self.forwardMove)
 	local rightAttack = self:moveRight(self.forwardMove)
 
@@ -55,17 +56,17 @@ function Pawn:getAttacks()
 		self.moveMeta[s] = 'attack'
 	end
 
-	if self:inFifthRow() then 
+	if self:inFifthRow() then
 		local leftSquare = self:moveLeft()
 		local rightSquare = self:moveRight()
 		print('ok')
-		if self:canAmPassan(leftSquare) then 
+		if self:canAmPassan(leftSquare) then
 			table.insert(attackSquares, leftAttack)
 			self.moveMeta[leftAttack] = 'am'
 		elseif self:canAmPassan(rightSquare) then
 			table.insert(attackSquares, rightAttack)
 			self.moveMeta[rightAttack] = 'am'
-	
+
 		end
 	end
 
@@ -77,8 +78,8 @@ end
 function Pawn:canAmPassan(square)
 	local pieceIndex = chessBoard:pieceInSquare(square)
 
-	if pieceIndex ~= nil  and Pieces[pieceIndex].color ~= self.color  and Pieces[pieceIndex].justDidDoubleMove == true then	 
-		return true	
+	if pieceIndex ~= nil  and Pieces[pieceIndex].color ~= self.color  and Pieces[pieceIndex].justDidDoubleMove == true then
+		return true
 	end
 
 	return false
@@ -103,7 +104,7 @@ end
 
 function Pawn:getControlledSquares()
 	local controlledSquares = {}
-	
+
 	local leftAttack = self:moveLeft(forwardMove)
 	local rightAttack = self:moveRight(forwardMove)
 
@@ -118,13 +119,13 @@ function Pawn:moveTo(square)
 	local possibleMoves = self:legalMoves()
 
 	if array.index_of(possibleMoves, square) ~= -1 and self.color == chessBoard.hasTurn then
-		if  self.moveMeta[square]  == 'attack' then 
+		if  self.moveMeta[square]  == 'attack' then
 			chessBoard:killPieceInSquare(square)
-		elseif self.moveMeta[square]  == 'am' then 
+		elseif self.moveMeta[square]  == 'am' then
 			local attackedRow =  self.color == 'white' and 5 or 4
 			local attackedSquare = self:getColumn(square) .. attackedRow
 			chessBoard:killPieceInSquare(attackedSquare)
-		elseif self.moveMeta[square] == 'double' then 
+		elseif self.moveMeta[square] == 'double' then
 			self.justDidDoubleMove = true
 		end
 
@@ -140,18 +141,18 @@ function Pawn:moveTo(square)
 
 		self.hasMoved = true
 		chessBoard:afterMove()
-	end 
+	end
 
 
 	self.grabFactor = 0
-	self.grabed = false	
+	self.grabed = false
 end
 
 
 function Pawn:inRome()
 	if self:getRow() == '8' and self.color == 'white' then
 		return true
-	elseif self:getRow() == '1' and self.color == 'black' then 
+	elseif self:getRow() == '1' and self.color == 'black' then
 		return true
 	else
 		return false

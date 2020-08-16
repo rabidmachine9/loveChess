@@ -6,6 +6,7 @@ King = Piece:new()
 
 King.hasMoved = false
 King.type = 'king'
+King.symbol = 'k'
 King.isChecked = false
 King.points = 0
 
@@ -13,7 +14,7 @@ King.points = 0
 function King:getPossibleMoves()
 	self.possibleMoves = {}
 
-	local forward =  self:moveForward() 
+	local forward =  self:moveForward()
 	table.insert(self.possibleMoves, forward)
 	table.insert(self.possibleMoves, self:moveLeft())
 	table.insert(self.possibleMoves, self:moveRight())
@@ -34,7 +35,7 @@ function King:getPossibleMoves()
 	for i=#(self.possibleMoves),1,-1  do
 		local square = self.possibleMoves[i]
 		local pieceIndex = chessBoard:pieceInSquare(square)
- 		
+
 		if pieceIndex ~= nil then
 			local otherPiece = Pieces[pieceIndex]
 			if otherPiece.color ==  self.color then
@@ -66,22 +67,22 @@ function King:castleCheck()
 		kingRook = Pieces[chessBoard:pieceInSquare('h1')]
 		queenRook = Pieces[chessBoard:pieceInSquare('a1')]
 
-		if kingRook ~= nil and kingRook.hasMoved == false and chessBoard:areSquaresEmpty({'f1', 'g1'}) then 
+		if kingRook ~= nil and kingRook.hasMoved == false and chessBoard:areSquaresEmpty({'f1', 'g1'}) then
 			table.insert(castels, 'g1')
 		end
 
-		if queenRook ~= nil and queenRook.hasMoved == false and chessBoard:areSquaresEmpty({'b1', 'c1', 'd1'}) then 
+		if queenRook ~= nil and queenRook.hasMoved == false and chessBoard:areSquaresEmpty({'b1', 'c1', 'd1'}) then
 			table.insert(castels, 'c1')
 		end
 	else
 		kingRook = Pieces[chessBoard:pieceInSquare('h8')]
 		queenRook = Pieces[chessBoard:pieceInSquare('a8')]
 
-		if kingRook ~= nil and kingRook.hasMoved == false and chessBoard:areSquaresEmpty({'f8', 'g8'}) then 
+		if kingRook ~= nil and kingRook.hasMoved == false and chessBoard:areSquaresEmpty({'f8', 'g8'}) then
 			table.insert(castels, 'g8')
 		end
 
-		if queenRook ~= nil and queenRook.hasMoved == false and chessBoard:areSquaresEmpty({'b8', 'c8', 'd8'}) then 
+		if queenRook ~= nil and queenRook.hasMoved == false and chessBoard:areSquaresEmpty({'b8', 'c8', 'd8'}) then
 			table.insert(castels, 'c8')
 		end
 	end
@@ -106,9 +107,9 @@ function King:moveTo(square)
 		if  square == 'g'.. (self:getRow()) and self.hasMoved == false  then
 			print('castling kingside')
 			self:kingSideCastle(square)
-		elseif square == 'c'.. (self:getRow()) and self.hasMoved == false  then 
+		elseif square == 'c'.. (self:getRow()) and self.hasMoved == false  then
 			print('castling queenside')
-			self:queenSideCastle(square) 
+			self:queenSideCastle(square)
 		else
 			chessBoard:killPieceInSquare(square)
 			self.square = square
@@ -120,11 +121,11 @@ function King:moveTo(square)
 
 
 	self.grabFactor = 0
-	self.grabed = false	
+	self.grabed = false
 
 
 end
- 
+
 function King:kingSideCastle(square)
 	self.square = square
 	local rookSquare = 'h'.. self:getRow()

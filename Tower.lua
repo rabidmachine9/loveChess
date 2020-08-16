@@ -7,6 +7,7 @@ Tower = Piece:new()
 
 Tower.hasMoved = false
 Tower.type = 'tower'
+Tower.symbol = 'r'
 Tower.points = 5
 
 
@@ -23,7 +24,7 @@ function Tower:getPossibleMoves()
 	self.possibleMoves = array.concat(self.possibleMoves, leftMoves)
 	self.possibleMoves = array.concat(self.possibleMoves, backwardsMoves)
 
-	
+
 	return self.possibleMoves
 end
 
