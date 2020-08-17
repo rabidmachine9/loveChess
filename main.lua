@@ -13,7 +13,7 @@ local hasTurn = 'white'
 clickedPieceIndex = nil
 
 Pieces = {}
-Pieces = PieceFactory:spawnPosition(Positions.initial)
+Pieces = PieceFactory:spawnPosition(Positions.castleCheck)
 chessBoard = Board:new(Pieces, 'white')
 
 
@@ -85,6 +85,7 @@ function love.mousepressed(x,y)
 		print("Has turn:" .. chessBoard.hasTurn)
 		print("Just Did double:" .. tostring(clickedPiece.justDidDoubleMove))
 		print("Position:" .. assert(inspect(chessBoard:getPosition())))
+		print("FEN:" .. assert(inspect(chessBoard:posToFen())))
 		if clickedPiece.type == "pawn" then
 			print("Reached in Rome:" .. tostring(clickedPiece:inRome()))
 		end

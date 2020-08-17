@@ -205,8 +205,60 @@ function Board:getPosition()
 			table.insert(position,ssq)
 		end
 	end
-
+	--table.sort(position)
 	return position
+end
+
+
+function Board:getPositionHashTable()
+	local position = {}
+	local ssq
+
+	for i,p in ipairs(Pieces) do
+		if p.color == 'white' then
+			position[p:getSquare()] = string.upper(p:getSymbol())
+		elseif p.color == 'black' then
+			position[p:getSquare()] = p:getSymbol()
+		end
+	end
+	--table.sort(position)
+	return position
+end
+
+
+function Board:posToFen()
+	local positionTable = self:getPositionHashTable()
+	local letters = 'abcdefgh'
+	local FEN = ""
+	local blanks = 0
+
+	for col=8,1,-1  do
+		if blanks ~= 0 then
+			FEN = FEN..blanks..'/'
+		elseif col ~= 8 then
+			FEN = FEN..'/'
+		end
+		blanks = 0
+
+
+		for i = 1, #letters do
+			local row = letters:sub(i,i)
+			local sq = row .. tostring(col)
+			print(sq)
+			if positionTable[sq] ~= nil then
+				if blanks ~= 0 then
+					FEN = FEN..blanks..positionTable[sq]
+					blanks = 0
+				else
+					FEN = FEN..positionTable[sq]
+				end
+			else
+				blanks = blanks+1
+			end
+		end
+	end
+
+	return FEN
 end
 
 return Board
