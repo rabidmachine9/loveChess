@@ -1,3 +1,5 @@
+local cute = require("cute")
+local shapes = require("src.shapes")
 require 'Board'
 require 'Bot'
 require 'Positions'
@@ -6,21 +8,20 @@ require 'PieceFactory'
 local array = require 'lib.array'
 local inspect = require 'lib.inspect'
 
-
 local hasTurn = 'white'
 
 
 clickedPieceIndex = nil
 
 Pieces = {}
-Pieces = PieceFactory:spawnPosition(Positions.castleCheck)
+Pieces = PieceFactory:spawnPosition(Positions.empty)
 chessBoard = Board:new(Pieces, 'white')
 
 
 bot = Bot:new()
 
-function love.load()
-
+function love.load(args)
+	cute.go(args)
 	canvas = love.graphics.newCanvas(800, 600)
 
     -- Rectangle is drawn to the canvas with the regular alpha blend mode.

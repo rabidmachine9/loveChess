@@ -1,5 +1,6 @@
 require 'Piece'
 local array = require 'lib.array'
+local inspect = require 'lib.inspect'
 
 
 Tower = Piece:new()
@@ -24,7 +25,7 @@ function Tower:getPossibleMoves()
 	self.possibleMoves = array.concat(self.possibleMoves, leftMoves)
 	self.possibleMoves = array.concat(self.possibleMoves, backwardsMoves)
 
-
+	print("Tower moves:" .. assert(inspect(self.possibleMoves)))
 	return self.possibleMoves
 end
 

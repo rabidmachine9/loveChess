@@ -49,8 +49,8 @@ function Knight:getPossibleMoves()
 		end
 	)
 
-
-
+	
+	print("horse moves:"..inspect(self.possibleMoves))
 	return self.possibleMoves
 end
 

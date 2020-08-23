@@ -88,7 +88,6 @@ end
 
 function Pawn:inFifthRow()
 	if self.color == 'white' then
-		print("white")
 		if tonumber(self:getRow()) == 5 then
 			return true
 		end

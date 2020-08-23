@@ -27,6 +27,11 @@ function Piece:new(color,square,pieceType)
 	return setmetatable(newPiece, self)
 end
 
+function Piece:getImage()
+	return love.graphics.newImage('images/'..self.type..'_'..(self.color):sub(1,1)..'.png')
+end
+
+
 function Piece:setPosition()
 	if self.grabed == false then
 		local squarePosition = Board:getSquareXY(self.square)
@@ -106,7 +111,7 @@ function Piece:moveRight(square)
 		return nil
 	end
 
-	local column = Board.columns[columnIndex]
+	local column = chessBoard.columns[columnIndex]
 
 	local square = column .. row
 
@@ -251,9 +256,6 @@ function Piece:infiniteRightBackwardsMoves(tempSquare)
 end
 
 
-function Piece:getImage()
-	return love.graphics.newImage('images/'..self.type..'_'..(self.color):sub(1,1)..'.png')
-end
 
 function Piece:infiniteForwardMoves(tempSquare)
 	local moves = {}

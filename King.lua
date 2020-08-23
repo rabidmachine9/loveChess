@@ -53,8 +53,8 @@ function King:getPossibleMoves()
 	end
 
 
-
-
+	self.possibleMoves = array.uniq(self.possibleMoves)
+	print("King Moves:"..inspect(self.possibleMoves))
 	return self.possibleMoves
 end
 
