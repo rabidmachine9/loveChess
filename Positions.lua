@@ -30,5 +30,10 @@ Positions.singlePawn = {
 	black = {}
 }
 
+Positions.stalemate1 = {
+	white = {'be3', 'rb3'},
+	black = {'ka8'}
+}
+
 
 return Positions

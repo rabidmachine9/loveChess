@@ -53,3 +53,12 @@ notion("Queen", function()
   table.sort(result)
   check(moves).shallowMatches(result)
 end)
+
+notion("Stalemate1", function()
+  local pos = PieceFactory:spawnPosition(Positions.stalemate1)
+  chessBoard = Board:new(pos, 'black')
+  chessBoard.castlingRights = '';
+  local moves = chessBoard:getAllMoves()
+  local result = {}
+  check(moves).shallowMatches(result)
+end)

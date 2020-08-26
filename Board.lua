@@ -11,6 +11,7 @@ Board.squareWidth = 100
 Board.squareHeight = 100
 Board.move = 1
 Board.hasTurn = 'white'
+Board.castlingRights = 'qkQK' --blackQueenSide,blackKingSide,whiteQueen,whiteKing
 
 --constructor
 function Board:new(pieces, hasTurn)
@@ -25,6 +26,21 @@ function Board:new(pieces, hasTurn)
 	setmetatable(newBoard, self)
 
 	return newBoard
+end
+
+function Board:getCastlingRights(color)
+	local rights = ''
+	for i = 1, #self.castlingRights do
+		local c = str:sub(i,i)
+		if color == 'white' and (c == 'q' or c == 'Q')  then
+			rights = rights..c
+		elseif color == 'black' and (c == 'k' or c == 'q') then
+			rights = rights..c
+		end
+	end
+
+	return rights
+
 end
 
 --moves a shadow effect square over the clicked square
@@ -168,6 +184,21 @@ function Board:reindexPieces()
 	end
 end
 
+function Board:getAllMoves()
+	local moves = {}
+	for i,p in ipairs(Pieces) do
+		if p.color == self.hasTurn then
+			local pieceSquare = p.symbol..p.square
+			local pieceMoves = p:getPossibleMoves()
+			for j,m in ipairs(pieceMoves) do
+				local move = pieceSquare..m
+				table.insert(moves,move)
+			end
+		end
+	end
+	print("these are the moves:".. inspect(moves))
+	return moves
+end
 
 -- square: string
 -- return, an object with the colors of all attackers
@@ -260,5 +291,7 @@ function Board:posToFen()
 
 	return FEN
 end
+
+
 
 return Board
