@@ -1,6 +1,11 @@
 local inspect = require 'lib.inspect'
 local array = require 'lib.array'
-
+require 'Pawn'
+require 'Tower'
+require 'King'
+require 'Queen'
+require 'Bishop'
+require 'Knight'
 Board = {}
 Board.__index = Board
 
@@ -12,9 +17,9 @@ Board.squareHeight = 100
 Board.move = 1
 Board.hasTurn = 'white'
 Board.castlingRights = 'qkQK' --blackQueenSide,blackKingSide,whiteQueen,whiteKing
-
+Board.pieces = {}
 --constructor
-function Board:new(pieces, hasTurn)
+function Board:new(hasTurn)
 	local newBoard = {}
 
 	newBoard.hasTurn = hasTurn
@@ -31,7 +36,7 @@ end
 function Board:getCastlingRights(color)
 	local rights = ''
 	for i = 1, #self.castlingRights do
-		local c = str:sub(i,i)
+		local c = string.sub(self.castlingRights,i,i)
 		if color == 'white' and (c == 'q' or c == 'Q')  then
 			rights = rights..c
 		elseif color == 'black' and (c == 'k' or c == 'q') then
@@ -102,10 +107,10 @@ end
 
 
 --get id of a piece in a suare if none return nil
---args, square: string , Pieces: object
+--args, square: string , self.pieces: object
 --return, number(index of Piece)
 function Board:pieceInSquare(square)
-	for i,p in ipairs(Pieces) do
+	for i,p in ipairs(self.pieces) do
 		if p.square == square then
 			return i
 		end
@@ -116,7 +121,7 @@ end
 
 
 function Board:colorOfPieceInSquare(square)
-	for i,p in ipairs(Pieces) do
+	for i,p in ipairs(self.pieces) do
 		if p.square == square then
 			return p.color
 		end
@@ -128,7 +133,7 @@ end
 --args: square: string('a4')
 --return: boolean
 function Board:isSquareEmpty(square)
-	for i,p in ipairs(Pieces) do
+	for i,p in ipairs(self.pieces) do
 		if p.square == square then
 			return false
 		end
@@ -165,10 +170,10 @@ end
 
 function Board:killPieceInSquare(square)
 
-	for i,piece in ipairs(Pieces) do
+	for i,piece in ipairs(self.pieces) do
 		if piece.square == square then
-			table.remove(Pieces,i)
-			Board:reindexPieces()
+			table.remove(self.pieces,i)
+			Board:reindex(self.pieces)
 
 			return true
 		end
@@ -179,14 +184,14 @@ function Board:killPieceInSquare(square)
 end
 
 function Board:reindexPieces()
-	for i,p in ipairs(Pieces) do
+	for i,p in ipairs(self.pieces) do
 		p.id = i
 	end
 end
 
 function Board:getAllMoves()
 	local moves = {}
-	for i,p in ipairs(Pieces) do
+	for i,p in ipairs(self.pieces) do
 		if p.color == self.hasTurn then
 			local pieceSquare = p.symbol..p.square
 			local pieceMoves = p:getPossibleMoves()
@@ -204,7 +209,7 @@ end
 -- return, an object with the colors of all attackers
 function Board:isSquareUnderAttack(square)
 	local attackers = {}
-	for i,p in ipairs(Pieces) do
+	for i,p in ipairs(self.pieces) do
 		if p.type ~= 'pawn' then
 			local moves = p:getPossibleMoves()
 			if array.index_of(moves, square) ~= -1 then
@@ -227,7 +232,7 @@ function Board:getPosition()
 	local position = {}
 	local ssq
 
-	for i,p in ipairs(Pieces) do
+	for i,p in ipairs(self.pieces) do
 		if p.color == 'white' then
 			ssq = string.upper(p:getSymbol()) .. p:getSquare()
 			table.insert(position,ssq)
@@ -245,7 +250,7 @@ function Board:getPositionHashTable()
 	local position = {}
 	local ssq
 
-	for i,p in ipairs(Pieces) do
+	for i,p in ipairs(self.pieces) do
 		if p.color == 'white' then
 			position[p:getSquare()] = string.upper(p:getSymbol())
 		elseif p.color == 'black' then
@@ -292,6 +297,48 @@ function Board:posToFen()
 	return FEN
 end
 
+
+function Board:setupPosition(position)
+	for i,piecePosition in pairs(position.white) do
+		p = self:createPiece('white',piecePosition)
+		if p ~= nil then
+			p.id = #self.pieces + 1
+			table.insert(self.pieces, p)
+
+		end
+	end
+
+	for i,piecePosition in pairs(position.black) do
+		p = self:createPiece('black',piecePosition)
+		if p ~= nil then
+			p.id = #self.pieces + 1
+			table.insert(self.pieces, p)
+		end
+	end
+
+	return self.pieces
+end
+
+function Board:createPiece(color,position)
+	if string.len(position) == 2 then
+		return Pawn:new(color,position)
+	elseif (position):sub(1,1) == 'r' then
+		return Tower:new(color,position:sub(2,3))
+	elseif (position):sub(1,1) == 'k' then
+		return King:new(color,position:sub(2,3))
+	elseif (position):sub(1,1) == 'n' then
+		return Knight:new(color,position:sub(2,3))
+	elseif (position):sub(1,1) == 'q' then
+		return Queen:new(color,position:sub(2,3))
+	elseif (position):sub(1,1) == 'b' then
+		return Bishop:new(color,position:sub(2,3))
+	else
+		print('Error: the position you are entering cannot be interpreted!')
+		return nil
+	end
+
+	return nil
+end
 
 
 return Board

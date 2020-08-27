@@ -3,7 +3,6 @@ local shapes = require("src.shapes")
 require 'Board'
 require 'Bot'
 require 'Positions'
-require 'PieceFactory'
 
 local array = require 'lib.array'
 local inspect = require 'lib.inspect'
@@ -13,9 +12,9 @@ local hasTurn = 'white'
 
 clickedPieceIndex = nil
 
-Pieces = {}
-Pieces = PieceFactory:spawnPosition(Positions.empty)
-chessBoard = Board:new(Pieces, 'white')
+-- Pieces = {}
+-- Pieces = PieceFactory:spawnPosition(Positions.empty)
+chessBoard = Board:new('white')
 
 
 bot = Bot:new()
@@ -40,7 +39,7 @@ end
 
 
 function love.update()
-		for i,p in ipairs(Pieces) do
+		for i,p in ipairs(chessBoard.pieces) do
 			if p.type == 'pawn' and p.color == chessBoard.hasTurn then
 				p.justDidDoubleMove = false
 			end
@@ -54,7 +53,7 @@ function love.draw()
 	love.graphics.setColor(255, 255, 255)
 	love.graphics.draw(background)
 
-	for i,piece in ipairs(Pieces) do
+	for i,piece in ipairs(chessBoard.pieces) do
 		piece:Draw()
 	end
 
@@ -75,7 +74,7 @@ function love.mousepressed(x,y)
 
 
 	if clickedPieceIndex ~= nil then
-		clickedPiece = Pieces[clickedPieceIndex]
+		clickedPiece = chessBoard.pieces[clickedPieceIndex]
 		clickedPiece.grabed = true
 
 		print("Possible moves " .. assert(inspect(clickedPiece:getPossibleMoves())))
@@ -109,6 +108,6 @@ end
 
 function love.keypressed(key)
    if key == "v" or key == "V" then
-      print("evaluation :" ..  bot:evaluatePosition(Pieces))
+      print("evaluation :" ..  bot:evaluatePosition(chessBoard.pieces))
    end
 end

@@ -1,5 +1,4 @@
 local inspect = require 'lib.inspect'
-require 'Board'
 local array = require 'lib.array'
 Piece = {}
 
@@ -352,7 +351,7 @@ end
 --return: boolean
 function Piece:_isThisMoveAnAttack(square)
 	local pieceIndex = chessBoard:pieceInSquare(square)
-	local otherPiece = Pieces[pieceIndex]
+	local otherPiece = chessBoard.pieces[pieceIndex]
 
 	if otherPiece.color ~= self.color then
 		return true

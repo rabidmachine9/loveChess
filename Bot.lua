@@ -24,7 +24,7 @@ end
 function Bot:findAttackedSquares()
 	self.attackedSquares = {}
 
-	for i,p in ipairs(Pieces) do
+	for i,p in ipairs(chessBoard.pieces) do
 		if p.color ~= chessBoard.hasTurn and p.tempDead == false then
 			if p.type ~= 'pawn' then
 				local moves = p:getPossibleMoves()
@@ -42,7 +42,7 @@ end
 
 
 function Bot:undieAll()
-	for i,p in ipairs(Pieces) do
+	for i,p in ipairs(chessBoard.pieces) do
 		p.tempDead = false
 	end
 end
@@ -52,20 +52,20 @@ function Bot:willItsKingBeCheckedAfterPieceMoves(piece_id, potential_square)
 	local result = false
 
 	if pieceInSquareIndex ~= nil then
-		Pieces[pieceInSquareIndex].tempDead = true
+		chessBoard.pieces[pieceInSquareIndex].tempDead = true
 	end
 
 
 
-	local original_square = Pieces[piece_id].square
+	local original_square = chessBoard.pieces[piece_id].square
 
 	--changing one of the most important global objects temporarily
-	Pieces[piece_id].square = potential_square
+	chessBoard.pieces[piece_id].square = potential_square
 
 	self.attackedSquares = {}
 
 	local hisMajesty = {}
-	for i,p in ipairs(Pieces) do
+	for i,p in ipairs(chessBoard.pieces) do
 		if p.color == chessBoard.hasTurn and p.type == 'king' then
 			hisMajesty = p
 		end
@@ -78,7 +78,7 @@ function Bot:willItsKingBeCheckedAfterPieceMoves(piece_id, potential_square)
 		result =  true
 	end
 
-	Pieces[piece_id].square = original_square
+	chessBoard.pieces[piece_id].square = original_square
 	self:undieAll()
 
 	return result

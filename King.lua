@@ -29,7 +29,7 @@ function King:getPossibleMoves()
 	print("King Moves:"..inspect(self.possibleMoves))
 
 	self.possibleMoves = array.filter(self.possibleMoves, function(square)
-			return array.index_of(bot.attackedSquares, square) ~= -1
+			return array.index_of(bot:findAttackedSquares(), square) == -1
 		end
 	)
 	print("King Moves:"..inspect(self.possibleMoves))
@@ -38,7 +38,7 @@ function King:getPossibleMoves()
 		local pieceIndex = chessBoard:pieceInSquare(square)
 
 		if pieceIndex ~= nil then
-			local otherPiece = Pieces[pieceIndex]
+			local otherPiece = chessBoard.pieces[pieceIndex]
 			if otherPiece.color ==  self.color then
 				table.remove(self.possibleMoves, i)
 			else
@@ -65,8 +65,8 @@ function King:castleCheck()
 	local castels = {}
 
 	if self.color == 'white' then
-		kingRook = Pieces[chessBoard:pieceInSquare('h1')]
-		queenRook = Pieces[chessBoard:pieceInSquare('a1')]
+		kingRook = chessBoard.pieces[chessBoard:pieceInSquare('h1')]
+		queenRook = chessBoard.pieces[chessBoard:pieceInSquare('a1')]
 
 		if kingRook ~= nil and kingRook.hasMoved == false and chessBoard:areSquaresEmpty({'f1', 'g1'}) then
 			table.insert(castels, 'g1')
@@ -76,8 +76,8 @@ function King:castleCheck()
 			table.insert(castels, 'c1')
 		end
 	else
-		kingRook = Pieces[chessBoard:pieceInSquare('h8')]
-		queenRook = Pieces[chessBoard:pieceInSquare('a8')]
+		kingRook = chessBoard.pieces[chessBoard:pieceInSquare('h8')]
+		queenRook = chessBoard.pieces[chessBoard:pieceInSquare('a8')]
 
 		if kingRook ~= nil and kingRook.hasMoved == false and chessBoard:areSquaresEmpty({'f8', 'g8'}) then
 			table.insert(castels, 'g8')
@@ -141,7 +141,7 @@ function King:kingSideCastle(square)
 	self.square = square
 	local rookSquare = 'h'.. self:getRow()
 
-	local kingRook = Pieces[chessBoard:pieceInSquare(rookSquare)]
+	local kingRook = chessBoard.pieces[chessBoard:pieceInSquare(rookSquare)]
 	kingRook.square = 'f' .. self:getRow()
 
 end
@@ -150,7 +150,7 @@ function King:queenSideCastle(square)
 	self.square = square
 	local rookSquare = 'a'.. self:getRow()
 
-	local queenRook = Pieces[chessBoard:pieceInSquare(rookSquare)]
+	local queenRook = chessBoard.pieces[chessBoard:pieceInSquare(rookSquare)]
 	queenRook.square = 'd' .. self:getRow()
 
 end

@@ -55,8 +55,8 @@ notion("Queen", function()
 end)
 
 notion("Stalemate1", function()
-  local pos = PieceFactory:spawnPosition(Positions.stalemate1)
-  chessBoard = Board:new(pos, 'black')
+  chessBoard = Board:new('black')
+  local pos = chessBoard:setupPosition(Positions.stalemate1)
   chessBoard.castlingRights = '';
   local moves = chessBoard:getAllMoves()
   local result = {}
