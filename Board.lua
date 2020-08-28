@@ -173,7 +173,7 @@ function Board:killPieceInSquare(square)
 	for i,piece in ipairs(self.pieces) do
 		if piece.square == square then
 			table.remove(self.pieces,i)
-			Board:reindex(self.pieces)
+			Board:reindexPieces(self.pieces)
 
 			return true
 		end
@@ -183,13 +183,20 @@ function Board:killPieceInSquare(square)
 	return false
 end
 
+function Board:reset()
+	for i,piece in ipairs(self.pieces) do
+		table.remove(self.pieces, i)
+		Board:reindexPieces(self.pieces)
+	end
+end
+
 function Board:reindexPieces()
 	for i,p in ipairs(self.pieces) do
 		p.id = i
 	end
 end
 
-function Board:getAllMoves()
+function Board:getAllMoves(color)
 	local moves = {}
 	for i,p in ipairs(self.pieces) do
 		if p.color == self.hasTurn then

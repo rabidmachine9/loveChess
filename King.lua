@@ -14,7 +14,7 @@ King.points = 0
 
 function King:getPossibleMoves()
 	self.possibleMoves = {}
-	print("King Moves:"..inspect(self.possibleMoves))
+	print("King Moves 1:"..inspect(self.possibleMoves))
 	local forward =  self:moveForward()
 	table.insert(self.possibleMoves, forward)
 	table.insert(self.possibleMoves, self:moveLeft())
@@ -26,13 +26,16 @@ function King:getPossibleMoves()
 	table.insert(self.possibleMoves, self:moveRight(backwards))
 	table.insert(self.possibleMoves, self:moveLeft(forward))
 	table.insert(self.possibleMoves, self:moveLeft(backwards))
-	print("King Moves:"..inspect(self.possibleMoves))
+	print("King Moves 2:"..inspect(self.possibleMoves))
 
-	self.possibleMoves = array.filter(self.possibleMoves, function(square)
-			return array.index_of(bot:findAttackedSquares(), square) == -1
-		end
-	)
-	print("King Moves:"..inspect(self.possibleMoves))
+	if self.color == chessBoard.hasTurn then
+		self.possibleMoves = array.filter(self.possibleMoves, function(square)
+				return array.index_of(bot:findAttackedSquares(), square) == -1
+			end
+		)
+	end
+	
+	print("King Moves 3:"..inspect(self.possibleMoves))
 	for i=#(self.possibleMoves),1,-1  do
 		local square = self.possibleMoves[i]
 		local pieceIndex = chessBoard:pieceInSquare(square)
@@ -46,16 +49,16 @@ function King:getPossibleMoves()
 			end
 		end
 	end
-	print("King Moves:"..inspect(self.possibleMoves))
+	print("King Moves 4:"..inspect(self.possibleMoves))
 
 
 	if self.hasMoved == false and string.len(chessBoard:getCastlingRights(self.color)) > 0  then
 		self.possibleMoves = array.concat(self:castleCheck(), self.possibleMoves)
 	end
-	print("King Moves:"..inspect(self.possibleMoves))
+	print("King Moves 5:"..inspect(self.possibleMoves))
 
 	self.possibleMoves = array.uniq(self.possibleMoves)
-	print("King Moves:"..inspect(self.possibleMoves))
+	print("King Moves 6:"..inspect(self.possibleMoves))
 	return self.possibleMoves
 end
 

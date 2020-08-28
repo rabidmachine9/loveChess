@@ -56,7 +56,17 @@ end)
 
 notion("Stalemate1", function()
   chessBoard = Board:new('black')
-  local pos = chessBoard:setupPosition(Positions.stalemate1)
+  chessBoard:setupPosition(Positions.stalemate1)
+  chessBoard.castlingRights = '';
+  local moves = chessBoard:getAllMoves()
+  local result = {}
+  check(moves).shallowMatches(result)
+end)
+
+notion("Stalemate2", function()
+  chessBoard:reset()
+  chessBoard = Board:new('black')
+  chessBoard:setupPosition(Positions.stalemate2)
   chessBoard.castlingRights = '';
   local moves = chessBoard:getAllMoves()
   local result = {}
