@@ -48,7 +48,7 @@ function Pawn:getAttacks()
 
 	attackSquares = array.filter(attackSquares, function(square)
 			local pieceInSquareIndex = chessBoard:pieceInSquare(square)
-			return (chessBoard:isSquareEmpty(square) == false and Pieces[pieceInSquareIndex].color ~= self.color)
+			return (chessBoard:isSquareEmpty(square) == false and chessBoard.pieces[pieceInSquareIndex].color ~= self.color)
 		end
 	)
 
@@ -78,7 +78,7 @@ end
 function Pawn:canAmPassan(square)
 	local pieceIndex = chessBoard:pieceInSquare(square)
 
-	if pieceIndex ~= nil  and Pieces[pieceIndex].color ~= self.color  and Pieces[pieceIndex].justDidDoubleMove == true then
+	if pieceIndex ~= nil  and chessBoard.pieces[pieceIndex].color ~= self.color  and chessBoard.pieces[pieceIndex].justDidDoubleMove == true then
 		return true
 	end
 

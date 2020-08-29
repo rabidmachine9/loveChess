@@ -40,5 +40,10 @@ Positions.stalemate2 = {
 	black = {'kh6','h7'}
 }
 
+Positions.stalemate3 = {
+	white = {'a4','kb3','bc4','rd1','f5','ng6'},
+	black = {'a5','b4','ke8','f6','g7'}
+}
+
 
 return Positions

@@ -17,7 +17,6 @@ Board.squareHeight = 100
 Board.move = 1
 Board.hasTurn = 'white'
 Board.castlingRights = 'qkQK' --blackQueenSide,blackKingSide,whiteQueen,whiteKing
-Board.pieces = {}
 --constructor
 function Board:new(hasTurn)
 	local newBoard = {}
@@ -26,6 +25,7 @@ function Board:new(hasTurn)
 	newBoard.occupiedSquares = {}
 	newBoard.shadowSquareX = 9999
 	newBoard.shadowSquareY = 9999
+	newBoard.pieces = {}
 
 	self.__index = self
 	setmetatable(newBoard, self)
@@ -184,10 +184,7 @@ function Board:killPieceInSquare(square)
 end
 
 function Board:reset()
-	for i,piece in ipairs(self.pieces) do
-		table.remove(self.pieces, i)
-		Board:reindexPieces(self.pieces)
-	end
+	self = nil
 end
 
 function Board:reindexPieces()
@@ -197,6 +194,7 @@ function Board:reindexPieces()
 end
 
 function Board:getAllMoves(color)
+	--print("Pieces:"..inspect(self.pieces))
 	local moves = {}
 	for i,p in ipairs(self.pieces) do
 		if p.color == self.hasTurn then
